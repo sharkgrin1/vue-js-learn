@@ -39,12 +39,12 @@ const changeDescriptionSize = () => {
           <span class="material-icons">location_on</span>
           <span class="ml-1">{{ job.location }}</span>
         </div>
-        <a
-            :href="`/jobs/${job.id}`"
+        <RouterLink
+            :to="`/jobs/${job.id}`"
             class="h-[36px] bg-gray-800 text-white rounded hover:bg-gray-500 transition px-4 py-2 rounded-lg text-center text-sm"
         >
           Read More
-        </a>
+        </RouterLink>
       </div>
     </div>
   </div>

@@ -8,7 +8,7 @@ defineProps({
 </script>
 
 <template>
-  <div :class="`max-w-sm mx-auto ${background} shadow-md rounded-lg p-6 mb-5`">
+  <div :class="`w-full ${background} shadow-md rounded-lg p-6 mb-5`">
     <slot/>
   </div>
 </template>
