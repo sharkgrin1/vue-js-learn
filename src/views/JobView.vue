@@ -15,7 +15,7 @@ const id = route.params.id;
 
 onMounted(async () => {
   try {
-    const response = await axios.get(`http://localhost:8000/jobs/${id}`);
+    const response = await axios.get(`/api/jobs/${id}`);
     state.job = response.data;
   } catch (error) {
     console.error(error);
@@ -85,7 +85,6 @@ onMounted(async () => {
             <p class="my-2 bg-gray-100 p-2 font-bold">{{ state.job.company.contactPhone }}</p>
           </div>
 
-          <!-- Manage -->
           <div class="bg-white p-6 rounded-lg shadow-md mt-6">
             <h3 class="text-xl font-bold mb-6">Manage Job</h3>
             <RouterLink
