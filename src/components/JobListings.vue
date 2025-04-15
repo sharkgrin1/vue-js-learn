@@ -1,15 +1,30 @@
 <script setup>
-import jobsJson from "@/jobs.json"
 import JobListing from "@/components/JobListing.vue";
-import {ref} from "vue";
+import {onMounted, reactive} from "vue";
+import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
+import axios from "axios";
 
-const jobs = ref(jobsJson);
+const state = reactive({
+  jobs: [],
+  isLoading: true,
+});
 
 defineProps({
   limit: Number,
   showAllJobsButton: {
     type: Boolean,
     default: false
+  }
+});
+
+onMounted(async () => {
+  try {
+    const response = await axios.get('http://localhost:8000/jobs');
+    state.jobs = response.data;
+  } catch (error) {
+    console.error(error);
+  } finally {
+    state.isLoading = false;
   }
 });
 </script>
@@ -20,14 +35,20 @@ defineProps({
       <h2 class="text-3xl font-bold text-black mb-6 text-center">
         Browse Jobs
       </h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <JobListing v-for="job in jobs.slice(0, limit || jobs.length)" :key="job.id" :job="job"/>
+
+      <div v-if="state.isLoading" class="text-center">
+        <PulseLoader/>
+      </div>
+
+      <div v-else class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <JobListing v-for="job in state.jobs.slice(0, limit || state.jobs.length)" :key="job.id" :job="job"/>
       </div>
     </div>
   </section>
 
   <section v-if="showAllJobsButton" class="m-auto max-w-lg my-10 px-6">
-    <RouterLink to="/jobs" class="block px-4 py-3 bg-black text-white text-center rounded-full hover:bg-gray-600 transition">
+    <RouterLink to="/jobs"
+                class="block px-4 py-3 bg-black text-white text-center rounded-full hover:bg-gray-600 transition">
       View All Jobs
     </RouterLink>
   </section>
