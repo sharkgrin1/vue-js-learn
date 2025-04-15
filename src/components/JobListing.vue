@@ -41,7 +41,7 @@ const changeDescriptionSize = () => {
         </div>
         <RouterLink
             :to="`/jobs/${job.id}`"
-            class="h-[36px] bg-gray-800 text-white rounded hover:bg-gray-500 transition px-4 py-2 rounded-lg text-center text-sm"
+            class="h-[36px] bg-gray-800 text-white hover:bg-gray-500 transition px-4 py-2 rounded-lg text-center text-sm"
         >
           Read More
         </RouterLink>
