@@ -1,9 +1,10 @@
 <script setup>
 import {onMounted, reactive} from "vue";
 import axios from "axios";
-import {useRoute} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 import BackButton from "@/components/BackButton.vue";
+import {useToast} from "vue-toastification";
 
 const state = reactive({
   job: {},
@@ -11,7 +12,25 @@ const state = reactive({
 });
 
 const route = useRoute();
+const router = useRouter();
 const id = route.params.id;
+
+const toast = useToast();
+
+const deleteJob = async () => {
+  const confirmDelete = window.confirm("Delete job?");
+  if (!confirmDelete) {
+    return;
+  }
+  try {
+    const response = await axios.delete(`/api/jobs/${id}`);
+    toast.success(`Job ${response.data.title} is deleted`);
+    await router.push("/jobs");
+  } catch (error) {
+    console.error(error);
+    toast.error(`Job is not deleted`);
+  }
+};
 
 onMounted(async () => {
   try {
@@ -93,8 +112,8 @@ onMounted(async () => {
               Edit Job
             </RouterLink>
             <button
-                class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline mt-4 block"
-            >
+                @click="deleteJob"
+                class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline mt-4 block">
               Delete Job
             </button>
           </div>
